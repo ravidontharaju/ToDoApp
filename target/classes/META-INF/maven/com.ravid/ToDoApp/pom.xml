@@ -126,7 +126,7 @@
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
-			<version>${es.version}</version>
+			<version>LATEST</version>
 		</dependency>
 
 		<!-- Twilio -->
