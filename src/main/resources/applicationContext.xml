@@ -13,13 +13,20 @@
 	<context:component-scan base-package="com.ravid.main"></context:component-scan>
 	<context:property-placeholder location="classpath:todoapplication.properties" />
 
-	<mongo:mongo host="${mongo.host}" port="${mongo.port}" />
-	<mongo:db-factory id="mongoDbFactory" host="${mongo.host}"
-		port="${mongo.port}" dbname="database" />
 	<mongo:repositories base-package="com.ravid.main.repository" />
 
+	<bean id="mongoURI" class="com.mongodb.MongoURI">
+		<constructor-arg name="uri"
+			value="${mongo.uri}" />
+	</bean>
+
+	<bean id="mongoDBFactory"
+		class="org.springframework.data.mongodb.core.SimpleMongoDbFactory">
+		<constructor-arg name="uri" ref="mongoURI" />
+	</bean>
+
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
-		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+		<constructor-arg name="mongoDbFactory" ref="mongoDBFactory" />
 	</bean>
 
 	<!-- Future Work, let's write some JSPs -->
