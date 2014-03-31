@@ -1,1 +1,1 @@
-web:    java $JAVA_OPTS -jar target/dependency/webapp-runner.jar --port 8080 target/*.war
+web:    java -Xmx384m -Xss512k -XX:+UseCompressedOops -jar target/dependency/webapp-runner.jar --port 8080 target/*.war
