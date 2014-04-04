@@ -1,6 +1,0 @@
-com\ravid\main\service\TwilioService.class
-com\ravid\main\repository\ToDoRepository.class
-com\ravid\main\entity\ToDoEntity.class
-com\ravid\main\exception\ToDoException.class
-com\ravid\main\service\ToDoService.class
-com\ravid\main\controller\ToDoController.class
