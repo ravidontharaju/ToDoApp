@@ -1,5 +1,7 @@
 package com.ravid.main.controller;
 
+import static com.ravid.main.service.ToDoValidationService.validateInput;
+
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -50,10 +52,13 @@ public class ToDoController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response save(JSONObject jsonObject) throws JSONException {
 
-		ToDoEntity toDoEntity = new ToDoEntity();
-		toDoEntity.setTitle(jsonObject.getString("title"));
-		toDoEntity.setBody(jsonObject.getString("body"));
-		toDoEntity.setDone(jsonObject.getBoolean("done"));
+		String message = validateInput(jsonObject);
+
+		if (message.isEmpty()) {
+			return Response.status(400).entity(message).build();
+		}
+
+		ToDoEntity toDoEntity = convertToEntity(jsonObject);
 		String output = "";
 		try {
 			toDoService.save(toDoEntity);
@@ -82,16 +87,28 @@ public class ToDoController {
 	public Response update(JSONObject jsonObject) throws JSONException,
 			TwilioRestException {
 
-		ToDoEntity toDoEntity = new ToDoEntity();
-		toDoEntity.setTitle(jsonObject.getString("title"));
-		toDoEntity.setBody(jsonObject.getString("body"));
-		toDoEntity.setDone(jsonObject.getBoolean("done"));
+		String message = validateInput(jsonObject);
+
+		if (!message.isEmpty()) {
+			return Response.status(400).entity(message).build();
+		}
+
+		ToDoEntity toDoEntity = convertToEntity(jsonObject);
 		toDoService.update(toDoEntity);
 		String output = "ToDo task with title : " + toDoEntity.getTitle()
 				+ " has been updated.";
 		return Response.status(200).entity(output).build();
 	}
-	
+
+	private ToDoEntity convertToEntity(JSONObject jsonObject)
+			throws JSONException {
+		ToDoEntity toDoEntity = new ToDoEntity();
+		toDoEntity.setTitle(jsonObject.getString("title"));
+		toDoEntity.setBody(jsonObject.getString("body"));
+		toDoEntity.setDone(jsonObject.getBoolean("done"));
+		return toDoEntity;
+	}
+
 	public void setToDoService(ToDoService toDoService) {
 		this.toDoService = toDoService;
 	}
