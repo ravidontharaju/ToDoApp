@@ -54,6 +54,10 @@ public class ToDoControllerUTest {
 		when(jsonObjectMock.getString("title")).thenReturn("dummy title");
 		when(jsonObjectMock.getString("body")).thenReturn("dummy body");
 		when(jsonObjectMock.getBoolean("done")).thenReturn(false);
+
+		when(jsonObjectMock.has("title")).thenReturn(true);
+		when(jsonObjectMock.has("body")).thenReturn(true);
+		when(jsonObjectMock.has("done")).thenReturn(true);
 		
 		when(toDoServiceMock.get("dummy title")).thenReturn(toDoEntityMock);
 		when(toDoServiceMock.search("dummy search")).thenReturn(Arrays.asList(toDoEntityMock));
@@ -89,6 +93,17 @@ public class ToDoControllerUTest {
 	}
 
 	@Test
+	public void testSaveMalformed() throws JSONException, TwilioRestException {
+		when(jsonObjectMock.has("body")).thenReturn(false);
+		when(jsonObjectMock.has("done")).thenReturn(false);
+		
+		Response response = underTest.save(jsonObjectMock);
+		
+		assertEquals(400, response.getStatus());
+		assertEquals("Missing field(s):  body done", response.getEntity());
+	}
+	
+	@Test
 	public void testDelete() {
 		Response response = underTest.delete("dummy title");
 		
@@ -103,6 +118,16 @@ public class ToDoControllerUTest {
 		
 		assertEquals(200, response.getStatus());
 		assertEquals("ToDo task with title : dummy title has been updated.", response.getEntity());
+	}
+	
+	@Test
+	public void testUpdateMalformed() throws JSONException, TwilioRestException {
+		when(jsonObjectMock.has("body")).thenReturn(false);
+
+		Response response = underTest.update(jsonObjectMock);
+		
+		assertEquals(400, response.getStatus());
+		assertEquals("Missing field(s):  body", response.getEntity());
 	}
 
 }

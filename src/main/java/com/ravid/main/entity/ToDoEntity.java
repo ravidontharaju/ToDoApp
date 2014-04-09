@@ -59,4 +59,19 @@ public class ToDoEntity {
 				.append(this.done).toString();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ToDoEntity) {
+
+			ToDoEntity entity = (ToDoEntity) obj;
+			if (this.title.equals(entity.getTitle())
+					&& this.body.equals(entity.getBody())
+					&& this.done == entity.isDone()) {
+				return true;
+			}
+
+		}
+		return false;
+	}
+
 }

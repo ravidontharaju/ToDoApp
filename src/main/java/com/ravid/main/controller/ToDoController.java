@@ -32,11 +32,19 @@ public class ToDoController {
 	private ToDoService toDoService;
 
 	@GET
-	@Path("/get/{title}")
+	@Path("/{title}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ToDoEntity get(@PathParam("title") String title) {
 		ToDoEntity toDoEntity = toDoService.get(title);
 		return toDoEntity;
+	}
+
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<ToDoEntity> getAll() {
+		List<ToDoEntity> toDoEntities = toDoService.getAll();
+		return toDoEntities;
 	}
 
 	@GET
@@ -54,7 +62,7 @@ public class ToDoController {
 
 		String message = validateInput(jsonObject);
 
-		if (message.isEmpty()) {
+		if (!message.isEmpty()) {
 			return Response.status(400).entity(message).build();
 		}
 

@@ -7,7 +7,7 @@ public class ToDoValidationService {
 
 	public static String validateInput(JSONObject jsonObject) {
 
-		StringBuilder builder = new StringBuilder("Missing fields: ");
+		StringBuilder builder = new StringBuilder("Missing field(s): ");
 		boolean isValid = true;
 
 		if (!jsonObject.has("title")) {
@@ -32,7 +32,7 @@ public class ToDoValidationService {
 			isValid = false;
 		}
 
-		return isValid ? builder.toString() : "";
+		return isValid ? "" : builder.toString();
 	}
 
 }

@@ -50,10 +50,11 @@ public class ToDoServiceUTest {
 		when(toDoEntityMock.isDone()).thenReturn(false);
 		when(toDoRepositoryMock.findByTitle("dummy title")).thenReturn(
 				toDoEntityMock);
-		
+
 		underTest = new ToDoService();
 		underTest.setToDoRepository(toDoRepositoryMock);
 		underTest.setTwilioService(twilioServiceMock);
+		underTest.setDevMode(false);
 	}
 
 	@Test
@@ -93,7 +94,11 @@ public class ToDoServiceUTest {
 
 	@Test
 	public void testUpdateNoSMS() throws TwilioRestException {
-		underTest.update(toDoEntityMock);
+		ToDoEntity toDoEntity = new ToDoEntity();
+		toDoEntity.setTitle("dummy title");
+		toDoEntity.setBody("dummy body");
+		toDoEntity.setDone(true);
+		underTest.update(toDoEntity);
 
 		verify(toDoRepositoryMock, times(1)).save(toDoEntityMock);
 		verify(twilioServiceMock, times(0)).sendMessage(toDoEntityMock);
@@ -102,7 +107,12 @@ public class ToDoServiceUTest {
 	@Test
 	public void testUpdate() throws TwilioRestException {
 		when(toDoEntityMock.isDone()).thenReturn(true);
-		underTest.update(toDoEntityMock);
+
+		ToDoEntity toDoEntity = new ToDoEntity();
+		toDoEntity.setTitle("dummy title");
+		toDoEntity.setBody("dummy body");
+		toDoEntity.setDone(true);
+		underTest.update(toDoEntity);
 
 		verify(toDoRepositoryMock, times(1)).save(toDoEntityMock);
 		verify(twilioServiceMock, times(1)).sendMessage(toDoEntityMock);
