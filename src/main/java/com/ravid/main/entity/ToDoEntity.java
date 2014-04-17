@@ -16,13 +16,13 @@ public class ToDoEntity {
 
 	private String body;
 
-	private boolean done;
+	private Boolean done;
 
 	public ToDoEntity() {
 
 	}
 
-	public ToDoEntity(String title, String body, boolean done) {
+	public ToDoEntity(String title, String body, Boolean done) {
 		this.title = title;
 		this.body = body;
 		this.done = done;
@@ -44,11 +44,11 @@ public class ToDoEntity {
 		this.body = body;
 	}
 
-	public boolean isDone() {
+	public Boolean isDone() {
 		return done;
 	}
 
-	public void setDone(boolean done) {
+	public void setDone(Boolean done) {
 		this.done = done;
 	}
 
